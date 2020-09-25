@@ -1,0 +1,336 @@
+
+                                 Frink 2.2
+
+   The   latest  version  of  Frink  is  always  available  by  ftp  from
+   catless.ncl.ac.uk in the /pub directory:
+   [1]ftp://catless.ncl.ac.uk/pub/frink.tar.gz
+
+   Frink  is  a  tcl formatting and static check program. It can prettify
+   your program, minimise, obfuscate or just sanity check it. It can also
+   do some rewriting.
+
+   If  you  want  to just check the program without formatting use the -J
+   flag.  This  causes all the heuristics to be applied but no tcl output
+   generated.  If  you  add  the -U flag then you get some extra hardline
+   checking.  Please  note that at the moment some of the heuristics will
+   only work correctly when the -J flag is used.
+
+   You  pass  it  filenames (or the stdin) and the output is generated to
+   stdout. There are a variety of options you can pass in :
+
+   -a
+          add spaces after {} and "" when processing -command. (default =
+          OFF)
+
+   -A
+          turn OFF special processing of expr commands.
+
+   -b
+          add braces (see manual page for details) (default = OFF)
+
+   -B
+          turn OFF processing code passed to the bind command.
+
+   -c <n>
+          set further indent for continuations to n. default = 2
+
+   -d
+          remove braces in certain (safe) circumstances (default = OFF)
+
+   -e
+          produce "else". default = OFF
+
+   -E
+          extract constant strings. (not implemented yet)
+
+   -f
+          rewrite some strings to use msgcat
+
+   -F<n>
+          selectively  control  which  heuristics are used. Currently the
+          parameter   is   a  single  hex  coded  number  with  each  bit
+          representing  a  test.  If you prefix the bitstring with ! then
+          the  negation of the value is used. The values you need to know
+          are:
+
+          00001 append parameter testing
+          00002 lappend parameter testing
+          00004 set parameter testing
+          00008 regexp parameter testing
+          00010 return checks
+          00020 check for : or ::: in names
+          00040 expr checks
+          00080 foreach var checking.
+          00100 check missing parameters
+          00200 check -switches on commands (*not* tk options!!)
+          00400 check for abbreviations of options
+          00800 check for unused variables
+          01000 check for bad name choice
+          02000 check for array usage
+          04000 check for possible name errors
+
+   -g
+          indent switch cases. default = OFF
+
+   -h
+          print information about options.
+
+   -H
+          turn on heuristic tests and warnings. (default = OFF)
+
+   -i <n>
+          set indent for each level to n. default = 4
+
+   -I
+          Treat elseif and else the same way. (default = OFF)
+
+   -j
+          remove non-essential blank lines. (default = OFF)
+
+   -J
+          Just do checks, no output. (default = OFF)
+
+   -k
+          remove non-essential braces. (default = OFF)
+
+   -K <f>
+          Specify file of extra code specs (see [2]below for details).
+
+   -l
+          try for one-liners
+
+   -m
+          minimise the code by removing redundant spacing. default = OFF
+
+   -M
+          Warn about switch statements with no --. (default = OFF)
+
+   -n
+          do not generate tab characters. default = OFF
+
+   -N
+          do not put a newline out before elseif. default = OFF
+
+   -o
+          obfuscate : default = OFF
+
+   -O <t>
+          Don't format lines starting with token "t"
+
+   -p <v>
+          If  v is a number produce that many blank lines after each proc
+          definition,   otherwise   produce   whatever  format  the  code
+          indicates. No codes are defined yet..... (default = do nothing)
+
+   -P
+          Turn off processing of "time" command (default = OFF)
+
+   -q
+          Add  spaces  round  the  conditions in if and while statements.
+          (default = OFF)
+
+   -Q
+          warn  about unquoted constants - not fully operational (default
+          = OFF)
+
+   -r
+          remove comments. default = OFF
+
+   -s <c>
+          format  according  to  style  name "c". (no style names defined
+          yet)
+
+   -S
+          Stop preserving end of line comments. default = OFF
+
+   -t <n>
+          set tabs every n characters.
+
+   -T
+          produce "then". default = OFF
+
+   -u
+          Safe to remove brackets from round elseif conditions. default =
+          OFF
+
+   -U
+          Hardline checking enabled. Will be strict about presence of --.
+          Complains  about  switches  with  no default. Complains about 1
+          used without brackets in while/for condition. default = OFF
+
+   -v
+          put { } round variable names where appropriate.
+
+   -V
+          The current version number
+
+   -w <n>
+          set line length. default = 80
+
+   -W
+          halt on warning.
+
+   -x
+          produce "xf style" continuations
+
+   -X
+          recognise tclX features
+
+   -y
+          Don't process -command (default = OFF)
+
+   -Y
+          Try to process dynamic code (default = OFF)
+
+   -z
+          Put a single space before the \ character on continuations.
+
+   -Z
+          Control heuristics that are tested. (-H turns on ALL tests
+
+   Please  try  it  and let me know how else you would like to be able to
+   tailor the output. (And all the bugs you find as well) Currently it is
+   geared  very  much  towards  the  style  of tcl programming that I use
+   myself.
+
+   Obfuscation  is  not  particularly sophisticated yet. In particular it
+   can  be  (in  most  cases)  reversed by running the obfuscated program
+   through frink again!
+
+   Frink  uses  quite  a few heuristics (i.e. a bunch of ad hoc hacks) to
+   improve  both formatting and minimisation. In some obscure cases these
+   may  burn  you.  Please let me know of any cases you find. Suggestions
+   for new heuristics are always welcome.
+
+   Currently  frink  supports  straightforward  tcl  (it  doesn't do case
+   either),  tclX  and  [incr  tcl]  1.0. N.B. frink assumes that you are
+   running  it  over  a correct tcl program. If this is not the case then
+   all  bets  are off! There are some constructions possible in tcl where
+   it  is  impossible  to  determine  the  correct  formatting  except at
+   runtime. If you use these, sorry, but frink can't help you.
+
+   Comment handling is not brilliant - suggestions are welcome for how it
+   could be improved.....
+
+Embedded Control
+
+   You can control frink's actions using embedded comments, thusly:
+      # FRINK: nocheck
+      set $b ffff
+
+   will  cause  the warning that the heuristic tests would generate to be
+   silenced  for  the  next  line. You can substitute the word PRAGMA for
+   FRINK if you so wish. (Currently they need to be in upper case - I may
+   allow  lower  case  as  well in the future). The options available are
+   currently:
+
+   nocheck
+          don't do any heuristic checks on the next line
+
+   noformat
+          don't try to do any clever formatting of the next line
+
+   notreached
+          this  section  of  the  code is never reached. This is probably
+          redundant  now  that  frink detects unreachable code itself. It
+          will probably vanish in a future release.
+
+   returnok
+          used  before  a  return  not nested in a proc will suppress the
+          usage warning.
+
+   set
+   This must be followed by a sequence of variable names. These will all
+          be marked as being set. This stops reports of 'used before
+          set'.
+
+   unused
+          This  must  be  followed  by a sequence of variable names. This
+          will stop the variables being reported as unused.
+
+   array
+          This  must  be  followed  by a sequence of variable names. This
+          will mark the names as referring to arrays.
+
+   restrictions (which will probably be lifted soon):
+     * the options must be in lower case
+
+Rewriting
+
+   Frink  will try to detect the cases where you use the options -text or
+   -label  and  can  rewrite  the  string  passed  in  to use the message
+   catalogue. Thus
+
+   label .foo -text "This is an example"
+
+   would become
+
+   label .foo -text [::msgcat::mc "This is an example"]
+
+   If Frink detects the the string is already of the form
+
+   [::msgcat::mc ......]
+
+   then  it  does  not  rewrite. N.B. Frink does not generate the package
+   require msgcat statement for you!!!!
+
+Heuristics
+
+   Frink applies a variety of heuristics to the tcl code to try to detect
+   possible errors. Note that sometimes the things that it points out are
+   not  in  fact  incorrect.  At  the  moment  the  checks it does are as
+   follows:
+    1. detects if certain commands are used without parameters.
+    2. checks  that  the  correct values are passed through as options to
+       built  in  commands (e.g. string, interp etc.) N.B. Frink does not
+       let  you  abbreviate the options as tcl does - this is intentional
+       as  it is a poor programing practice for several reasons. (I might
+       implement a flag that allows this in the future though)
+    3. detects  certain  cases  where  too many or too few parameters are
+       provided.
+    4. detects "\ " at the end of a line (bad continuation usually).
+    5. detects missing }, ] and ".
+    6. detects   when  non-constant  strings  are  passed  as  the  first
+       parameter to set, append and lappend. Also checks other statements
+       where variable names are expected (global, unset etc.)
+    7. detects  variable  names  with  single or more than two sequential
+       colons in them.
+    8. detects exprs where the expression is not braced.
+    9. detects some missing ) cases.
+   10. detects  break  not  used  in a bind or in a loop, and return used
+       outside a proc
+   11. detects  where  return  is used inconsistently (i.e. sometimes you
+       return  a  result, sometimes not). Picks up missing returns at end
+       of procs that return results too.
+   12. checks nested foreach statements to see if variables get reused.
+   13. checks for possible -switch problems
+
+   I  have other heuristic tests planned, and if you have any suggestions
+   for tests I can implement please let me know.
+
+  Extending the analysis
+
+   The  -K  flag allows you to specify a file that describes new commands
+   to  Frink  so  that  it can format/check them correctly. The syntax is
+   very simple.
+    1. comment lines start with a #
+    2. blank lines are ignored
+    3. definition  lines  start  with  the  name  of  the command and are
+       followed  by  a  specification of the parameters. These tell Frink
+       what  to  expect  in these positions and what formatting/checks it
+       should therefore carry out.
+
+   Here are some specs for commands that you already are familiar with:
+
+   append {var any args}
+          append's first parameter is a variable name
+          the  second  can  be  anything and this can be followed by 0 or
+          more parameters.
+
+   I  am  changing  some  of the internals here so the available features
+   change. When they settle down I'll document them fully....
+
+References
+
+   1. ftp://catless.ncl.ac.uk/pub/frink.tar.gz
+   2. file://localhost/home/nlfm/Working/Frink/README.html#K

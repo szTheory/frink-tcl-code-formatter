@@ -1,0 +1,650 @@
+Last Change 12 Dec 2002
+
+Changes in 2.2.2
+
+1) Lots of new tests and some new pragmas.
+
+2) Allow the value after the -F flag to have a ! in front of it so that it
+   can be negated (all tests except.....)
+
+3) Added the -Q flag which will check for unquoted strings. it tries
+   to be intelligent about this, but clearly there will be false
+   positives. If one person finds one bug with the feature then
+   it was worth all the false positives.. 
+
+4) Fixed a few bugs too. Three are still some problems with variable
+   name usage checking - these are not bugs per se, just places where
+   it is rather hard to do the check (even if it looks easy to you!!)
+
+5) Added package command to tcl command list
+
+6) Move all the compilation control over to a GNU style configure set up.
+   The old tcl setup was based on my program Obeah and was very out of date
+   and people found it confusing to use. Using the configure stuff everything
+   is much more automatic though mroe of the guts are exposed.
+
+7) Fixed case where a global was used as an array to remove spurious
+   warning
+
+8) Fixed bug with parentheses inside conditions
+	
+Changes in 2.1.6
+
+1) Changed some warning messages which were not as clear as they
+   might be.
+
+2) Removed the -C option as it was not being implemented!
+
+3) Fixed a problem that arose when scanning multiple files (Thanks Stefan F.)
+
+4) Added checking for bracketed elseif condition - was missing. Thanks Larry
+
+5) Started to split the code up into more files - it was getting unwieldy.
+
+Changes in 2.1.5
+
+1) Update documentation and fixed typos (Thanks to Larry Virden for the nit picking)
+
+2) Add continue checking
+
+3) Add testing for abbreviated option names and warn about them.
+
+Changes in 2.1.4
+
+1) Unreachable code and infinite loops now working.
+
+2) Doing 1 uncovered and fixed a case where some heuristics were not
+   being applied.
+
+Changes in 2.1.3
+
+1) Fixed return handling in switches.
+
+Changes in 2.1.2
+
+1) Frink won't complain about a missing return in the case where you have
+   something like if {a} { return b } { return c} at the end of a proc.
+
+2) Added string replace command into list.
+
+3) exit and error should now be handled better in a variety of cases.
+   
+4) return -1 is not detected as a missing flag case
+
+5) -U flag will force switches with no default to be warned about as will the
+   switch checking flag whose name I have forgotten.
+
+6) unreachable code should be detected now.
+
+Changes in 2.1.1
+
+1) Removed support for frink.1 manual page - just providing HTML and text now.
+   (if this is a problem then moan....). This just means that I can keep the
+   documentation up to date much more easily!
+
+2) Removed an unused documentation file
+
+3) Now checks that you are passing variable names to regexp in the
+   appropriate places.
+   
+4) Updated documentation.
+
+5) Fix return value testing so that it always generates a line number
+
+6) Partially fix some cases where a conditional or blocked return will
+   prevent the return value test at the end of a proc
+   
+7) Add the -U flag which does various hardline enforcement - for instance
+   it will always demand -- when it is a possibility
+
+Changes in 2.1.0
+
+0) Renamed this version to be 2.1 in preparation for other planned additions.
+
+1) Fix some documentation bugs.
+
+2) Commands global, unset, upvar and variable now get checked for variable
+   name usage in the same way as set, append etc.
+   
+3) unset checks the sanity of any possible switches as the first parameter
+   (8.4 compatibility test)
+   
+4) regexp switch testing is better and it will not complain about a missing
+   -- when it frink can check that none is needed.
+
+5) There was a bug in interp handling, which is now *not* done with a builtin
+   procedure.
+   
+6) Added a flag to control checking of switches (-nocase etc. not switch statements)
+
+7) Fixed a core dump when there was a bracing error in the code inside
+   foreach statement. When the situation is detected frink will print a
+   warning that things look a little odd....
+
+Changes in 2.0.12
+
+1) Added checking for -- in regexp calls
+
+2) Updated documentation for heuristic test values - reused incr test
+   for regexp.
+   
+3) I wonder when I added the -M flag for testing if switch statements had a --
+   in them? Anyhow, it's there, though it ought to be one of the heuristic tests
+   and not a flag.
+
+4) Add an ifdef for FreeBSD malloc usage.
+
+Changes in 2.0.11
+
+1) Fix handling of string options that can take flags.
+
+2) return was not handling -code/-error cases correctly with regard to
+   heuristic testing.
+
+Changes in 2.0.10
+
+1) For the life of me I can't remember...
+
+Changes in 2.0.9
+
+1) Added -q flag
+
+2) Noticed that the -a flag appears to do nothing at all.
+
+Changes in 2.0.8
+
+1) Slight restructuring of code for handling expr bracketing test.
+
+2) Added expression tests in handling of tclX loop. Does anyone out there
+   still use tclX I wonder?
+
+Changes in 2.0.7
+
+1) Fix bug when meeting foreach statements that have a same-line comment
+   on the closing brace..... (Thanks Joachim for finding this)
+
+2) Added warning of unbracketed conditions in if statements.
+
+3) Added warning of unbracketed condition in while and expression in for
+   statements. (Different path to the if case)
+
+Changes in 2.06
+
+1) Changed some exit(0) to be exit(1) - they were error conditions!
+
+2) Frink will exit with a non-zero return code if there were any warnings
+   during its tests. If you pass multiple files in then the return code will
+   be non-zero if*any* of the files have warnings in them. Errors always cause
+   the program to exit and not process any more files - is this the right
+   behaviour I ask myself....
+
+3) Added pragma information to the documentation files.
+
+Changes in 2.0.5
+
+1) Fix pragmas - they now seem to work. You use them thusly:
+
+    # PRAGMA: nocheck
+     set $ssss sss
+
+   turns off the checks for the following line. If you replace nocheck
+   with notreached or noformat, the obvious consequences ensue. If you
+   don;t like PRAGMA: you can say FRINK:
+
+Changes in 2.0.4
+
+1) Now attempts to correctly detect array elements when testing for
+   variable names. The test is pretty crude so it may get
+   some wrong but it will get the most common cases.
+
+Changes in 2.0.3
+
+??
+
+Changes in 2.0.2
+
+??
+
+
+Changes in 2.0.1
+
+1) Too many to list....
+
+Changes in 2.0
+
+1) Renamed release to be 2.0 as the internal mechanisms have changed so much.
+
+2) Frink is now driven internally using the same mechanism that allows you to
+   add specs of other commands. I am intending to develop this so that it is
+   more flexible.
+   
+3) Fixed some other bugs....
+
+Changes in 1.3.4
+
+1) Fixed line number problem with procs with continuations in them. Found
+   horrible, similar problem with bodies that are strings rather than lists
+   which is not yet fixed.
+
+changes in 1.3.3
+
+1) Added new -K flag. This allows you to specify a file that contains
+   descriptions of tcl commands that you want specially formatted (for
+   example your own special class commands). Look at the README file
+   for information on what you can specify. These commands are searched
+   for *before* the normal tcl ones so you can override the built-in
+   stuff if you want.
+
+changes in 1.3.2
+
+1) extended foreach var nesting testing a bit.
+
+2) added hex conversion of parameter to -F flag so you can now turn
+   on and off individual heuristic tests.
+   
+3) started to add a PRAGMA system to embed heuristic control like lint does.
+   I may add in some formatting control too.
+   
+4) Fix horrible -text and -label handling bug!!!
+
+Changes in 1.3.1p1
+
+1) Fixed line numbering bug. (Thanks Cary)
+
+2) Added foreach var nesting check. (Rudimentary at the moment)
+
+Changes in 1.3.1
+
+1) Added support for return checking: if in a proc  you sometimes return
+   results and sometimes don't frink will warn you.
+
+2) Constant strings that get rewritten to msgcat format can be saved to a file.
+   I've changed the usage of the -E flag so that you provide a locale name
+   that indicates what language the strings are currently written in. The file
+   created will be called <locale>.msg
+   
+3) Check that locale values passed to -E look correct.
+
+Changes in 1.3.0
+
+1) Moved up a version
+
+2) Added heuristic testing
+
+3) Fixed some potential bugs
+
+4) Added rewriting for msgcat on -text and -label
+
+Changes in 1.2p42
+
+1) Changed body handling so that if the code body is held in a string
+   rather than {} then frink does not attempt to process it as it is most
+   likely that the code contains dynamic stuff which will cause it to break.
+   I'm not 100% certain that this is the right thing to do yet, but we can see.
+
+Changes in 1.2p41
+
+1) Add -y flag to stop processing of -command options
+
+Changes in 1.2p40
+
+1) Add -H flag which will cause some heuristic tests to be made on the code.
+   Currently this just involves checking the first parameter of append, incr
+   and lappend to see if they have the form $dddd. More tests will be added
+   as and when I think of them or people suggest them.
+   
+2) Add -J flag for "Just Test": generates no output and turns on the -H
+   flag.
+
+Changes in 1.2p39
+
+1) Take out the condition optimising code. It was never finished and was
+   only useful in a tcl 7 world.
+
+Changes in 1.2p38
+
+1) Stop removal of braces on conditions when minimising - this can cause
+   things to break in some cases and it also turns off the expression compiler
+   so is not a good idea.
+
+Changes in 1.2p37
+
+1) Add -N flag.
+
+Changes in 1.2p36
+
+1) Fix problem with { in strings
+
+Changes in 1.2p35
+
+1) I cant remember....
+
+Changes in 1.2p34
+
+1) Switch handler was not dealing with -- properly.
+
+2) Fix bug with -p option - missing : in getopt statement
+
+3) Improved handling of single line comments introduced by ;#. Where the
+   # does not immediately follow the ; there is no special case.
+   
+4) Add some stuff to help people build frink under Windows (see the Windows
+   sub-directory) - thanks to Jean-Michel Pedrono for this.
+
+Changes in 1.2p33
+
+1) Add -I flag so that elseif is treated like else.
+
+Changes in 1.2p32
+
+1) Fixed bug in interp handling.
+
+2) Fixed general bug where frink dumped core if you used a command
+   and gave it no parameters when some were expected.....
+
+Changes in 1.2p31
+
+1) Add includes to make malloc work with BSDI
+
+Changes in 1.2p30
+
+1) Forgot to handle case of \r after a line continuation character....
+
+Changes in 1.2p29
+
+1) Add handling for \r at the end of lines so that people can at least
+   try to run the program on Windows machines....
+
+Changes in 1.2p28
+
+1) Add support for the uplevel command.
+
+Changes in 1.2p27
+
+1) Fix the stupid bug in 1.2p26.....
+
+Changes in 1.2p26
+
+1) Fix the stupid bug in p25 ......
+
+Changes in 1.2p25
+
+1) Add support for namespace and interp command.
+
+Changes in 1.2p24
+
+1) Fix a problem that showed up when using catch statements with an array
+   element as the message variable. (The cause was deeper than this though).
+
+Changes in 1.2p23
+
+1) Change extra character checking to ignore ; and ) after a string as
+   this can be OK in expressions and command lists. (Some errors will
+   slip through now though)
+
+2) Add parenthesis matching for expressions.
+
+3) Add -A option to disable processing of expr commands.
+
+Changes in 1.2p22
+
+1) Improve check for extra characters after strings and lists.
+
+Changes in 1.2p2[01]
+
+1) Support for new foreach syntax.
+
+2) Added -W flag that halts on a warning - thanks to Ross J. Reedstrom
+   for this one.
+
+3) Fixed a bug in handling of strings that start with # in certain
+   contexts. (Again thanks to Ross Reedstrom for finding this - there
+   may be other places where it happens that I haven't caught yet....)
+
+4) Beginnings of some tcl optimisation code. This is enabled by the -E
+   flag. Be warned that this is work in progress and you use it
+   entirely at your own risk as it rewrites your code rather than just
+   reformatting it!!!
+
+Changes in 1.2p19
+
+1) Fixed yet another comment handling problem....
+
+Changes in 1.2p18
+
+1) Fix horrible comment error introduced in P17
+
+2) Fix obfuscation bug.
+
+Changes in 1.2p17
+
+1) Error message enhancements (Thanks to gregm)
+
+2) More Correct (I hope) handling of tcl's bizarre \ handling rules. There
+   are some cases I think where the formatting may not be quite what is wanted
+   but these seem to come with the territory. There should be no buggy code
+   produced though.
+
+3) Memory leaks plugged. (several times.... Thanks to gregm for test cases)
+
+4) Yet more storage allocation fixes.
+
+5) Documentation fixes.
+
+6) The -P option wasn't being recognised.
+
+Changes in 1.2p16
+
+1) Add time command processing (Thanks to Viktor Dukhovni)
+
+2) Check for missing arguments to calls (Thanks to Viktor Dukhovni)
+
+3) Some storage allocation fixes (Thanks to Viktor Dukhovni)
+
+4) Fix comment handling problem in {}. Now preserves ;# comments. Comments
+   inside code inside "" are still broken.
+
+Changes in 1.2p15
+
+1) Change default for -u flag.
+
+2) Add processing of catch statement and -C flag to control it.
+
+3) Change bind handling slightly to go for oneliners where possible.
+
+Changes in 1.2p14
+
+1) Change name of function lconv as it clashes in AIX4.1 (thanks to Zsolt
+   Koppany)
+
+2) Move include of malloc.h in tcl.c for HP systems (thanks to Zsolt Koppany)
+
+3) Add -u flag
+
+Changes in 1.2p13
+
+1) Fixed not reading HOME/.frinkrc problem (thanks to John Ellson)
+
+2) Fixed obfuscation problem with #! comment at start (spotted by John Ellson)
+
+3) Fix tiny English problem in README to please Jim Wight...
+
+Changes in 1.2p12
+
+1) Fix problem with unescaped $ used not as starter of a variable name.
+
+2) Allow for very long strings
+
+3) Fix formatting error with strings longer than line and no spaces in them.
+
+4) Fix problem with minimising while conditions.
+
+5) Slight optimisation of previous case where the condition is a constant.
+
+Last Change 28 April 1995
+
+Changes in 1.2p11
+
+1) Handle larger buffers for big programs (tnx to gregm@nms.otc.com.au)
+
+2) Add tclX loop command (tnx to gregm@nms.otc.com.au)
+
+3) Manual page errors (tnx to gregm@nms.otc.com.au)
+
+4) Added -V flag to print version number
+
+5) Fixed handling of #! comments (I think)
+
+6) Fixed handling of } and " at end of lines in -o mode (which isn't
+   really supported anyway...)
+
+7) Add Make button to configure
+
+8) Change long line handling on output.
+
+9) Add -X flag to control recognition of tclX features.
+
+10) Add -B flag to turn off special processing of bind command.
+
+Changes in 1.2p10
+
+1) Add some error checks
+
+2) Change error message printing
+
+3) Alter way code in "" is handled
+
+4) Fix problem with ; in for loop params.
+
+Changes in 1.2p9
+
+1) Fix bug when bind body is a null string.
+
+Changes in 1.2p8
+
+1) Handle possibility of "then" in if statements. Add putThen flag
+
+Changes in 1.2p7
+
+1) Fix storage allocation problem.
+
+2) Fix array bounds problem
+
+3) Fix -command problem and general case where configure is used as an
+   access function in xf mode.
+
+Changes in 1.2p6
+
+1) Fix bug with comments in switches.
+
+Changes in 1.2p5
+
+1) Add -g flag which causes switch cases to be indented.
+
+Changes in 1.2p4
+
+1) Add LDFLAGS to configuration options.
+
+2) Add missing flags to getopt call.
+
+3) Fix blank line handling (again!)
+
+Changes in 1.2p3
+
+1) Fixed some problems with long lines and continuations.
+
+Changes in 1.2p2
+
+1) Added detection of -command options and subsequent formatting of
+   the code.
+
+2) Add detection of simple one-liners (you need this for 1.....)
+
+Changes in 1.2p1
+
+1) Replaced strdup which is not portable.
+
+2) Added support for rc files
+
+3) Lots of code clean ups.
+
+4) Extra support for bodies that are strings.
+
+Released at 1.2.5.
+
+Changes in 1.2.3
+
+1) Storage allocation changes
+
+2) added -v flag
+
+3) lots of other minor changes.
+
+Changes in 1.2.2
+
+1) Fix output of some truly bizarre tokens with { and } in them.
+
+Changes in 1.2.1
+
+1) Frink is now written in C.....
+
+2) Many bugs fixed and weird cases handled correctly
+
+3) A little faster but not that much - more work needed!!!
+
+-----------------------------------------------------------------------
+
+Changes in 1.1.1
+
+1) handle weird comment case
+
+Changes in 1.1.10
+
+1) Makefile fix
+
+Changes in 1.1.8
+
+1) Makefile fix
+
+2) Handling of continuations and calls fixed.
+
+Changes in 1.1.8
+
+1) incr tcl corrections
+
+Changes in 1.1.7
+
+1) Switch handling fixed
+
+2) ; handling fixed
+
+3) lots of other changes
+
+4) debracing added
+
+Changes in 1.1.6
+
+1) Fix misunderstanding of semantics of ; and remove some redundant
+   lines in -m mode.
+
+Changes in 1.1.5
+
+1) Fix itcl code bug
+
+2) Fix comment handling
+
+Changes in 1.1.4
+
+1) Fix nocomment problem reported by dl
+
+Changes in 1.1.3
+
+1) Fix configuration script error
+
+2) Completely rewrite the code.......
+
+3) Add support for [incr tcl] (not yet tested)
+
+Changes in 1.1.2
+
+1) fix Makefile problem

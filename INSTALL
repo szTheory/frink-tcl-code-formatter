@@ -1,0 +1,7 @@
+All you need to do is :
+
+configure
+make
+make install
+
+and it ought to work!
